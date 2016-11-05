@@ -362,7 +362,7 @@ describe('Category scale tests', function() {
 
 		var minSize = scale.update(100, 200);
 
-		expect(scale.width).toBe(100);
+		expect(scale.width).toBe(110);
 		expect(scale.height).toBe(200);
 		expect(scale.paddingTop).toBe(6);
 		expect(scale.paddingBottom).toBe(6);
@@ -371,7 +371,7 @@ describe('Category scale tests', function() {
 		expect(scale.labelRotation).toBe(0);
 
 		expect(minSize).toEqual({
-			width: 100,
+			width: 110,
 			height: 200,
 		});
 
