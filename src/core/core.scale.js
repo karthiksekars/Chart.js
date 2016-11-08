@@ -193,8 +193,11 @@ module.exports = function(Chart) {
 			var tickLabelFont = helpers.fontString(tickFontSize, tickFontStyle, tickFontFamily);
 			context.font = tickLabelFont;
 
-			var firstWidth = context.measureText(me.ticks[0]).width;
-			var lastWidth = context.measureText(me.ticks[me.ticks.length - 1]).width;
+			var firstTick = me.ticks[0];
+			var firstWidth = helpers.isArray(firstTick) ? helpers.longestText(context, tickLabelFont, firstTick) : context.measureText(firstTick).width;
+
+			var lastTick = me.ticks[me.ticks.length - 1];
+			var lastWidth = helpers.isArray(lastTick) ? helpers.longestText(context, tickLabelFont, lastTick) : context.measureText(lastTick).width;
 			var firstRotated;
 
 			me.labelRotation = optionTicks.minRotation || 0;
@@ -327,8 +330,11 @@ module.exports = function(Chart) {
 					minSize.height = Math.min(me.maxHeight, minSize.height + labelHeight);
 					me.ctx.font = tickLabelFont;
 
-					var firstLabelWidth = me.ctx.measureText(me.ticks[0]).width;
-					var lastLabelWidth = me.ctx.measureText(me.ticks[me.ticks.length - 1]).width;
+					var firstTick = me.ticks[0];
+					var firstLabelWidth = helpers.isArray(firstTick) ? helpers.longestText(me.ctx, tickLabelFont, firstTick) : me.ctx.measureText(firstTick).width;
+
+					var lastTick = me.ticks[me.ticks.length - 1];
+					var lastLabelWidth = helpers.isArray(lastTick) ? helpers.longestText(me.ctx, tickLabelFont, lastTick) : me.ctx.measureText(lastTick).width;
 
 					// Ensure that our ticks are always inside the canvas. When rotated, ticks are right aligned which means that the right padding is dominated
 					// by the font height
@@ -681,7 +687,7 @@ module.exports = function(Chart) {
 
 					var label = itemToDraw.label;
 					if (helpers.isArray(label)) {
-						for (var i = 0, y = -(label.length - 1)*tickFontSize*0.75; i < label.length; ++i) {
+						for (var i = 0, y = 0; i < label.length; ++i) {
 							// We just make sure the multiline element is a string here..
 							context.fillText('' + label[i], 0, y);
 							// apply same lineSpacing as calculated @ L#320
