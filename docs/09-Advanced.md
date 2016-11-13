@@ -34,6 +34,25 @@ myLineChart.data.datasets[0].data[2] = 50; // Would update the first dataset's v
 myLineChart.update(); // Calling update now animates the position of March from 90 to 50.
 ```
 
+#### .updateConfig(partialConfig) 
+
+Triggers an update of the chart config. This allows for dynamic updating of the config including the axes. It does NOT support changing the type of the chart. To do that, the chart must be recreated. This method does not update the chart. `.update()` should be used after this function is called.
+
+```javascript
+// Hide the title and legend from the chart
+myLineChart.updateConfig({
+	title: {
+		display: false
+	},
+	legend: {
+		display: false
+	}
+});
+
+// trigger re-render of the chart
+myLineChart.update();
+```
+
 #### .reset()
 
 Reset the chart to it's state before the initial animation. A new animation can then be triggered using `update`.
@@ -409,6 +428,7 @@ Plugins will be called at the following times
 * Before datasets draw
 * After datasets draw
 * Resize
+* Config Update
 * Before an animation is started
 
 Plugins should derive from Chart.PluginBase and implement the following interface
@@ -424,6 +444,8 @@ Plugins should derive from Chart.PluginBase and implement the following interfac
 	beforeDatasetsUpdate: function(chartInstance) { }
 	afterDatasetsUpdate: function(chartInstance) { }
 	afterUpdate: function(chartInstance) { },
+
+	configUpdate: function(chartInstance, newConfig) {},
 
 	// This is called at the start of a render. It is only called once, even if the animation will run for a number of frames. Use beforeDraw or afterDraw
 	// to do something on each animation frame
